@@ -332,7 +332,6 @@ void WalkAST::VisitDeclRefExpr( clang::DeclRefExpr * DRE) {
   if (clang::VarDecl * D = llvm::dyn_cast_or_null<clang::VarDecl>(DRE->getDecl()) ) { 
      clang::SourceLocation SL = DRE->getLocStart();
      if (BR.getSourceManager().isInSystemHeader(SL) || BR.getSourceManager().isInExternCSystemHeader(SL)) return;
-     if ( support::isSafeClassName( D->getCanonicalDecl()->getQualifiedNameAsString() ) ) return;
      ReportDeclRef( DRE );
 
   }
@@ -349,8 +348,6 @@ void WalkAST::ReportDeclRef( const clang::DeclRefExpr * DRE) {
 
 
      clang::ento::PathDiagnosticLocation CELoc = clang::ento::PathDiagnosticLocation::createBegin(DRE, BR.getSourceManager(),AC);
-     if ( support::isSafeClassName( t.getCanonicalType().getAsString() ) ) return;
-     if ( D->hasAttr<CMSThreadGuardAttr>() || D->hasAttr<CMSThreadSafeAttr>()) return;
      if ( D->isStaticLocal() && D->getTSCSpec() != clang::ThreadStorageClassSpecifier::TSCS_thread_local && ! support::isConst( t ) )
      {
           std::string buf;
@@ -424,7 +421,6 @@ void WalkAST::VisitMemberExpr( clang::MemberExpr *ME) {
   if (BR.getSourceManager().isInSystemHeader(SL) || BR.getSourceManager().isInExternCSystemHeader(SL)) return;
 
   const ValueDecl * D = ME->getMemberDecl();
-  if ( D->hasAttr<CMSThreadGuardAttr>() || D->hasAttr<CMSThreadSafeAttr>()) return;
   if (!(ME->isImplicitAccess())) return;
   Stmt * P = AC->getParentMap().getParent(ME);
      while (AC->getParentMap().hasParent(P)) {
@@ -481,7 +477,6 @@ void WalkAST::VisitCXXMemberCallExpr( clang::CXXMemberCallExpr *CE) {
 
 void WalkAST::ReportMember(const clang::MemberExpr *ME) {
  const ValueDecl * D = ME->getMemberDecl();
- if ( D->hasAttr<CMSThreadGuardAttr>() || D->hasAttr<CMSThreadSafeAttr>()) return;
  if ( visitingCallExpr ) {
      clang::Expr * IOA = visitingCallExpr->getImplicitObjectArgument();
      if (!( IOA->isImplicitCXXThis() || llvm::dyn_cast_or_null<CXXThisExpr>(IOA->IgnoreParenCasts()))) return;
@@ -660,7 +655,6 @@ void ClassChecker::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::Ana
      for ( auto I = RD->field_begin(), E = RD->field_end(); I != E; ++I)
           {
           const FieldDecl * D = (*I) ;
-          if ( D->hasAttr<CMSThreadGuardAttr>() || D->hasAttr<CMSThreadSafeAttr>()) return;
           if ( D->isMutable() )
                 {
                     clang::QualType t =  D->getType();
@@ -691,7 +685,6 @@ void ClassChecker::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::Ana
           if ( !llvm::isa<clang::CXXMethodDecl>((*I)) ) continue;
           if (!(*I)->isConst()) continue;
           clang::CXXMethodDecl * MD = llvm::cast<clang::CXXMethodDecl>((*I)->getMostRecentDecl());
-          if ( MD->hasAttr<CMSThreadGuardAttr>() || MD->hasAttr<CMSThreadSafeAttr>()) continue;
                     if ( MD->hasBody() ) {
                          clang::Stmt *Body = MD->getBody();
                          WalkAST walker(this,BR, mgr.getAnalysisDeclContext(MD),MD);

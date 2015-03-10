@@ -62,22 +62,18 @@ void FWalker::VisitChildren( clang::Stmt *S) {
 
 void FWalker::VisitDeclRefExpr( clang::DeclRefExpr * DRE) {
   if (const clang::VarDecl * D = llvm::dyn_cast_or_null<clang::VarDecl>(DRE->getDecl()) ) {
-	if ( D && support::isSafeClassName(D->getCanonicalDecl()->getQualifiedNameAsString() ) ) return;
 	ReportDeclRef(DRE);
   }
 }
 
 void FWalker::ReportDeclRef ( const clang::DeclRefExpr * DRE) {
   
-        const clang::VarDecl * D = llvm::dyn_cast_or_null<clang::VarDecl>(DRE->getDecl());
-	if ( D && ( D->hasAttr<CMSThreadGuardAttr>() || D->hasAttr<CMSThreadSafeAttr>())) return;
-	if ( support::isSafeClassName( D->getCanonicalDecl()->getQualifiedNameAsString() ) ) return;
+     const clang::VarDecl * D = llvm::dyn_cast_or_null<clang::VarDecl>(DRE->getDecl());
 
  	const char *sfile=BR.getSourceManager().getPresumedLoc(D->getLocation()).getFilename();
 	std::string fname(sfile);
 	if (!support::isInterestingLocation(fname)) return;
 	clang::QualType t =  D->getType();  
-	if ( support::isSafeClassName( t.getCanonicalType().getAsString() ) ) return;
 	const Decl * PD = AC->getDecl();
 	std::string dname =""; 
 	std::string sdname =""; 
@@ -86,13 +82,10 @@ void FWalker::ReportDeclRef ( const clang::DeclRefExpr * DRE) {
 		dname = ND->getQualifiedNameAsString();
 	}
 	clang::ento::PathDiagnosticLocation DLoc;
-	if (support::isCmsLocalFile(sfile)) {
-		if (D->getLocation().isMacroID()) 
-			DLoc = clang::ento::PathDiagnosticLocation(D->getLocation(),BR.getSourceManager());
-		else 
-			DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, BR.getSourceManager());
-	} else 
-		DLoc = clang::ento::PathDiagnosticLocation::createBegin(DRE, BR.getSourceManager(), AC);
+	if (D->getLocation().isMacroID()) 
+		DLoc = clang::ento::PathDiagnosticLocation(D->getLocation(),BR.getSourceManager());
+	else 
+		DLoc = clang::ento::PathDiagnosticLocation::createBegin(D, BR.getSourceManager());
 
 	std::string tname ="function-checker.txt.unsorted";
 
@@ -143,9 +136,7 @@ void FWalker::ReportDeclRef ( const clang::DeclRefExpr * DRE) {
 
 void FunctionChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr,
                     BugReporter &BR) const {
-	if ( MD->hasAttr<CMSThreadSafeAttr>()) return;
  	const char *sfile=BR.getSourceManager().getPresumedLoc(MD->getLocation()).getFilename();
- 	if (!support::isCmsLocalFile(sfile)) return;
 	std::string fname(sfile);
 	if ( !support::isInterestingLocation(fname) ) return;
       	if (!MD->doesThisDeclarationHaveABody()) return;
@@ -156,7 +147,6 @@ void FunctionChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr
 
 void FunctionChecker::checkASTDecl(const FunctionDecl *FD, AnalysisManager& mgr,
                     BugReporter &BR) const {
-	if ( FD->hasAttr<CMSThreadSafeAttr>()) return;
         if (FD-> isInExternCContext()) {
                 std::string buf;
                 std::string dname = FD->getQualifiedNameAsString();
@@ -172,7 +162,6 @@ void FunctionChecker::checkASTDecl(const FunctionDecl *FD, AnalysisManager& mgr,
         }
 
  	const char *sfile=BR.getSourceManager().getPresumedLoc(FD->getLocation ()).getFilename();
-   	if (!support::isCmsLocalFile(sfile)) return;
 	std::string fname(sfile);
 	if ( !support::isInterestingLocation(fname) ) return;
 	if (FD->doesThisDeclarationHaveABody()) {
@@ -184,9 +173,7 @@ void FunctionChecker::checkASTDecl(const FunctionDecl *FD, AnalysisManager& mgr,
 void FunctionChecker::checkASTDecl(const FunctionTemplateDecl *TD, AnalysisManager& mgr,
                     BugReporter &BR) const {
 
-	if ( TD->hasAttr<CMSThreadSafeAttr>()) return;
  	const char *sfile=BR.getSourceManager().getPresumedLoc(TD->getLocation ()).getFilename();
-   	if (!support::isCmsLocalFile(sfile)) return;
 	std::string fname(sfile);
 	if ( !support::isInterestingLocation(fname) ) return;
 	for (FunctionTemplateDecl::spec_iterator I = const_cast<clang::FunctionTemplateDecl *>(TD)->spec_begin(), 

@@ -27,7 +27,6 @@ bool UsingNamespace::isDeclOK (const clang::NamedDecl *D, clang::ento::BugReport
 {
   if (D->getDeclContext ()->getParent()!=0) return true;
   const char *sfile=BR.getSourceManager().getPresumedLoc(D->getLocation ()).getFilename();
-  if (!support::isCmsLocalFile(sfile)) return true;
   size_t flen = strlen(sfile);
   if ((sfile[flen-2] != '.') || (sfile[flen-1] != 'h')) return true;
   return false;
