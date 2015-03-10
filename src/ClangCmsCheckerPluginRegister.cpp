@@ -45,11 +45,11 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
      registry.addChecker< clangcms::ClassDumperFT>( "optional.ClassDumperFT", "dumps macro TYPELOOKUP_DATA_REG types which define data classes" );
      registry.addChecker< clangcms::ClassDumperInherit>( "optional.ClassDumperInherit", "Dumps classes inheriting from data classes" );
      registry.addChecker< clangcms::ClassDumper>( "optional.ClassDumper", "Dumps class memmbers and base classes " );
-     registry.addChecker< clangcms::FiniteMathChecker>( "cms.NonFiniteMath", "Reports usage of isnan and isinf." );
-     registry.addChecker< clangcms::UsingNamespace>( "cms.CodeRules.UsingNamespace", "Checks for 'using namespace' or 'using std::' in header files" );
-     registry.addChecker< clangcms::CatchAll>( "cms.CodeRules.CatchAll", "Checks for 'catch(...)' in source files" );
-     registry.addChecker< clangcms::FunctionChecker>( "cms.FunctionChecker", "Reports functions which access non-const statics" );
-     registry.addChecker< clangcms::FunctionDumper>( "cms.FunctionDumper", "Reports function calls and overrides" );
+     registry.addChecker< clangcms::FiniteMathChecker>( "optional.NonFiniteMath", "Reports usage of isnan and isinf." );
+     registry.addChecker< clangcms::UsingNamespace>( "optional.CodeRules.UsingNamespace", "Checks for 'using namespace' or 'using std::' in header files" );
+     registry.addChecker< clangcms::CatchAll>( "optional.CodeRules.CatchAll", "Checks for 'catch(...)' in source files" );
+     registry.addChecker< clangcms::FunctionChecker>( "optional.FunctionChecker", "Reports functions which access non-const statics" );
+     registry.addChecker< clangcms::FunctionDumper>( "optional.FunctionDumper", "Reports function calls and overrides" );
 }
 
 extern "C"
