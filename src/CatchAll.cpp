@@ -11,8 +11,6 @@ using namespace clangcms;
 
 void CatchAll::checkASTCodeBody(const clang::Decl* D, clang::ento::AnalysisManager& AM, clang::ento::BugReporter& BR) const
 {
-  const char *sfile=BR.getSourceManager().getPresumedLoc(D->getLocation()).getFilename();
-  if ((!sfile) || (!support::isCmsLocalFile(sfile))) return;
   const clang::Stmt* s=D->getBody();
   if (!s) return;
   s=process(s);

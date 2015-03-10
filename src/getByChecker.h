@@ -15,7 +15,6 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include <llvm/ADT/SmallString.h>
 
-#include "CmsException.h"
 #include "CmsSupport.h"
 
 namespace clangcms {
@@ -33,8 +32,6 @@ public:
                     clang::ento::BugReporter &BR) const ;
 
 
-private:
-  CmsException m_exception;
 };
 
 }

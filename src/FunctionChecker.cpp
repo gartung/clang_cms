@@ -61,7 +61,7 @@ void FWalker::VisitChildren( clang::Stmt *S) {
 
 
 void FWalker::VisitDeclRefExpr( clang::DeclRefExpr * DRE) {
-  if (const clang::VarDecl * D = llvm::dyn_cast_or_null<clang::VarDecl>(DRE->getDecl()) ) {
+  if (clang::VarDecl::classof(DRE->getDecl()) ) {
 	ReportDeclRef(DRE);
   }
 }

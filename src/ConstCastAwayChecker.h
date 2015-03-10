@@ -11,7 +11,6 @@
 #include <clang/StaticAnalyzer/Core/Checker.h>
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
-#include "CmsException.h" 
 
 namespace clangcms {
 
@@ -19,9 +18,6 @@ class ConstCastAwayChecker: public clang::ento::Checker< clang::ento::check::Pre
 public:
 	mutable std::unique_ptr<clang::ento::BugType> BT;
 	void checkPreStmt(const clang::ExplicitCastExpr *CE, clang::ento::CheckerContext &C) const;
-
-private:
-  CmsException m_exception;
 
 };
 

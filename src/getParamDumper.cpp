@@ -23,7 +23,6 @@
 #include <string>
 #include <algorithm> 
 
-#include "CmsException.h"
 #include "CmsSupport.h"
 #include "getParamDumper.h"
 
@@ -233,8 +232,6 @@ void getParamDumper::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::A
   
 
      const clang::SourceManager &SM = BR.getSourceManager();
-     const char *sfile=SM.getPresumedLoc(RD->getLocation()).getFilename();
-     if (!support::isCmsLocalFile(sfile)) return;
 
      std::string tname = "getparam-dumper.txt.unsorted";
      std::string ps = "const class edm::ParameterSet ";

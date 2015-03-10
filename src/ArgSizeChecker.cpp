@@ -22,15 +22,10 @@ namespace clangcms {
 void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx) const
 {
 
-  CmsException m_exception;
   clang::LangOptions LangOpts;
   LangOpts.CPlusPlus = true;
   clang::PrintingPolicy Policy(LangOpts);
 
- const clang::ento::PathDiagnosticLocation ELoc =
-   clang::ento::PathDiagnosticLocation::createBegin(E, ctx.getSourceManager(),ctx.getLocationContext());
-
-  if ( ! m_exception.reportGeneral( ELoc, ctx.getBugReporter() ) )  return;
   	llvm::SmallString<100> buf;
   	llvm::raw_svector_ostream os(buf);
 
@@ -111,12 +106,10 @@ void ArgSizeChecker::checkPreStmt(const CXXConstructExpr *E, CheckerContext &ctx
 void ArgSizeChecker::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr,
                     BugReporter &BR) const {
        	const SourceManager &SM = BR.getSourceManager();
-	CmsException m_exception;
        	PathDiagnosticLocation DLoc =PathDiagnosticLocation::createBegin( MD, SM );
 	
  
 //       	return;
-	if ( ! m_exception.reportGeneral( DLoc, BR ) )  return;
 
 	for (CXXMethodDecl::param_const_iterator I = MD->param_begin(), E = MD->param_end(); I!=E; I++) {
 		llvm::SmallString<100> buf;

@@ -19,7 +19,6 @@
 #include <iterator>
 #include <string>
 #include <algorithm> 
-#include "CmsException.h"
 #include "CmsSupport.h"
 #include "FunctionDumper.h"
 
@@ -50,7 +49,7 @@ public:
   /// This method adds a CallExpr to the worklist 
   void setVisited(Expr * E) {
       Kind &K = VisitedExpr[E];
-      if ( K = NotVisited ) {
+      if ( (K = NotVisited) ) {
        VisitedExpr[E] = Visited;
        return;
       }
@@ -58,7 +57,7 @@ public:
 
   bool wasVisited(Expr * E) {
       Kind &K = VisitedExpr[E];
-      if ( K = Visited ) return true;
+      if ( (K = Visited) ) return true;
       return false;
   }
 
@@ -175,7 +174,6 @@ void FunctionDumper::checkASTDecl(const CXXMethodDecl *MD, AnalysisManager& mgr,
       const char *sfile=BR.getSourceManager().getPresumedLoc(MD->getLocation()).getFilename();
       std::string sname(sfile);
       if ( ! support::isInterestingLocation(sname) ) return;
-      if ( ! support::isCmsLocalFile(sfile) ) return;
       if (!MD->doesThisDeclarationHaveABody()) return;
       FDumper walker(BR, mgr.getAnalysisDeclContext(MD), MD);
       walker.Visit(MD->getBody());
@@ -197,7 +195,6 @@ void FunctionDumper::checkASTDecl(const FunctionDecl *MD, AnalysisManager& mgr,
       const char *sfile=BR.getSourceManager().getPresumedLoc(MD->getLocation()).getFilename();
       std::string sname(sfile);
       if ( ! support::isInterestingLocation(sname) ) return;
-      if ( ! support::isCmsLocalFile(sfile) ) return;
       if (!MD->doesThisDeclarationHaveABody()) return;
       FDumper walker(BR, mgr.getAnalysisDeclContext(MD), MD);
       walker.Visit(MD->getBody());
@@ -212,7 +209,6 @@ void FunctionDumper::checkASTDecl(const FunctionTemplateDecl *TD, AnalysisManage
      const char *sfile=BR.getSourceManager().getPresumedLoc(TD->getLocation ()).getFilename();
      std::string sname(sfile);
      if ( ! support::isInterestingLocation(sname) ) return;
-     if ( ! support::isCmsLocalFile(sfile) ) return;
      for (FunctionTemplateDecl::spec_iterator I = const_cast<clang::FunctionTemplateDecl *>(TD)->spec_begin(), 
                E = const_cast<clang::FunctionTemplateDecl *>(TD)->spec_end(); I != E; ++I) 
           {

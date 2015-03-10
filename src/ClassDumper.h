@@ -13,7 +13,6 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include <llvm/ADT/SmallString.h>
 #include <string>
-#include "CmsException.h"
 #include "CmsSupport.h"
 
 namespace clangcms {

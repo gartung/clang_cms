@@ -24,8 +24,6 @@ public:
                     clang::ento::BugReporter &BR) const ;
 
 
-private:
-  CmsException m_exception;
 };
 
 }

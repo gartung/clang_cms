@@ -13,7 +13,6 @@
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 #include <llvm/ADT/SmallString.h>
 
-#include "CmsException.h"
 #include "CmsSupport.h"
 
 namespace clangcms {
@@ -25,8 +24,6 @@ public:
   void checkASTDecl(const clang::CXXRecordDecl *CRD, clang::ento::AnalysisManager& mgr,
                     clang::ento::BugReporter &BR) const ;
 
-private:
-  CmsException m_exception;
 };
 
 }

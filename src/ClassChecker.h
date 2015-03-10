@@ -4,7 +4,6 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 
-#include "CmsException.h"
 #include "CmsSupport.h"
 
 namespace clangcms {

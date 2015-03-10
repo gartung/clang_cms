@@ -48,8 +48,14 @@ void clang_registerCheckers ( clang::ento::CheckerRegistry &registry)
      registry.addChecker< clangcms::FiniteMathChecker>( "optional.NonFiniteMath", "Reports usage of isnan and isinf." );
      registry.addChecker< clangcms::UsingNamespace>( "optional.CodeRules.UsingNamespace", "Checks for 'using namespace' or 'using std::' in header files" );
      registry.addChecker< clangcms::CatchAll>( "optional.CodeRules.CatchAll", "Checks for 'catch(...)' in source files" );
+     registry.addChecker< clangcms::edmChecker>( "optional.edmChecker", "Flags classes inheriting from edm::EDProducer,edm::EDFilter,edm::Analyzer or edm::OutputModule" );
+     registry.addChecker< clangcms::getByChecker>( "optional.getByChecker", "Checks for calls to edm::getByLabel or edm::getManyByType and reports edm::Handle type passed" );
+     registry.addChecker< clangcms::ArgSizeChecker>( "optional.ArgSize", "Reports args passed by value with size>4k." );
      registry.addChecker< clangcms::FunctionChecker>( "optional.FunctionChecker", "Reports functions which access non-const statics" );
      registry.addChecker< clangcms::FunctionDumper>( "optional.FunctionDumper", "Reports function calls and overrides" );
+     registry.addChecker< clangcms::EDMPluginDumper>( "optional.EDMPluginDumper", "Dumps macro DEFINE_EDM_PLUGIN types" );
+     registry.addChecker< clangcms::ThrUnsafeFCallChecker>( "optional.ThrUnsafeFCallChecker", "Reports calls of known thread unsafe functions" );
+     registry.addChecker< clangcms::getParamDumper>( "optional.getParamDumper", "Dumps out calls to edm::ParamaterSet:: getParameter and getUntrackedParameter" );
 }
 
 extern "C"

@@ -153,7 +153,6 @@ void ClassDumperCT::checkASTDecl(const clang::ClassTemplateDecl *TD,clang::ento:
                     clang::ento::BugReporter &BR ) const {
 
       const char *sfile=BR.getSourceManager().getPresumedLoc(TD->getLocation()).getFilename();
-      if (!support::isCmsLocalFile(sfile)) return;
 
      std::string crname("class '");
      std::string pname = "classes.txt.dumperct.unsorted";
@@ -194,7 +193,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
                     clang::ento::BugReporter &BR ) const {
 
       const char *sfile=BR.getSourceManager().getPresumedLoc(TD->getLocation()).getFilename();
-      if (!support::isCmsLocalFile(sfile)) return;
 
      std::string crname("class '");
      std::string pname = "classes.txt.dumperft.unsorted";

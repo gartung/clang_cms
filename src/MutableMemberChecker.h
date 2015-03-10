@@ -11,7 +11,6 @@
 #include <clang/StaticAnalyzer/Core/PathSensitive/CheckerContext.h>
 #include <clang/StaticAnalyzer/Core/BugReporter/BugType.h>
 
-#include "CmsException.h"
 #include "CmsSupport.h"
 
 namespace clangcms {
@@ -23,7 +22,6 @@ public:
                       clang::ento::AnalysisManager &Mgr,
                       clang::ento::BugReporter &BR) const;
 private:
-  CmsException m_exception;
 };  
 }
 
