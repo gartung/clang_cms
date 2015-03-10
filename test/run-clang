@@ -1,0 +1,1 @@
+clang -cc1 -load ../libClangCmsPlugin.so -analyze -analyzer-checker=optional.ClassChecker -std=c++0x class_checker.cpp
