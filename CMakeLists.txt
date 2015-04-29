@@ -11,7 +11,7 @@ link_directories(${LLVM_LIB_DIR})
 
 find_package(Clang REQUIRED)
 
-include_directories( ${CLANG_INCLUDE_DIR} )
+include_directories( ${CLANG_INCLUDE_DIRS} )
 
 add_definitions("-std=c++11")
 
