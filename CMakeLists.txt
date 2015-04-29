@@ -53,5 +53,5 @@ add_library( ClangCmsPlugin SHARED
      )
 
 target_link_libraries ( ClangCmsPlugin 
-     ${CLANG_LIBS} LLVMSupport
+     ${CLANG_LIBS} ${LLVM_LIBS_CORE}
      )
