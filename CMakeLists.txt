@@ -51,6 +51,6 @@ add_library( clangSAplugin SHARED
      src/getParamDumper.cpp
      )
 
-target_link_libraries ( ClangCmsPlugin 
+target_link_libraries ( clangSAplugin 
      ${CLANG_LIBS} ${LLVM_LIBS_CORE}
      )
