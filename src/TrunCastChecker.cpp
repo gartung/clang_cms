@@ -96,8 +96,8 @@ void ICEVisitor::VisitBinaryOperator( BinaryOperator *BO )
 		clang::ento::PathDiagnosticLocation CELoc = clang::ento::PathDiagnosticLocation::createBegin(BO, BR.getSourceManager(),AC);
 		BR.EmitBasicReport(ACD,CheckName(),"implicit cast of int type to smaller int type could truncate","CMS code rules", os.str(),CELoc, BO->getSourceRange());
 		}
-	if ( ( size_otype == size_ttype ) && (ToTy->hasSignedIntegerRepresentation() &&  OrigTy->hasUnsignedIntegerRepresentation() || 
-		ToTy->hasUnsignedIntegerRepresentation() &&  OrigTy->hasSignedIntegerRepresentation() ) ) {
+	if ( size_otype == size_ttype  && ( (ToTy->hasSignedIntegerRepresentation() &&  OrigTy->hasUnsignedIntegerRepresentation())  || 
+		(ToTy->hasUnsignedIntegerRepresentation() &&  OrigTy->hasSignedIntegerRepresentation()) )  ) {
   		llvm::SmallString<100> buf;
   		llvm::raw_svector_ostream os(buf);
 		os <<"Cast-to type, "<<tname<<". Cast-from type, "<<oname<<". Changes int sign type. "<<support::getQualifiedName(*(ACD)); 
@@ -140,8 +140,8 @@ void ICEVisitor::VisitImplicitCastExpr( ImplicitCastExpr *CE )
 		clang::ento::PathDiagnosticLocation CELoc = clang::ento::PathDiagnosticLocation::createBegin(CE, BR.getSourceManager(),AC);
 		BR.EmitBasicReport(ACD,CheckName(),"implicit cast of int type to smaller int type could truncate","CMS code rules", os.str(),CELoc, CE->getSourceRange());
 		}
-	if ( ToTy->hasSignedIntegerRepresentation() &&  OrigTy->hasUnsignedIntegerRepresentation() || 
-		ToTy->hasUnsignedIntegerRepresentation() &&  OrigTy->hasSignedIntegerRepresentation() ) {	
+	if ( (ToTy->hasSignedIntegerRepresentation() &&  OrigTy->hasUnsignedIntegerRepresentation()) || 
+		(ToTy->hasUnsignedIntegerRepresentation() &&  OrigTy->hasSignedIntegerRepresentation() )) {	
   		llvm::SmallString<100> buf;
  	 	llvm::raw_svector_ostream os(buf);
 		os <<"Cast-to type, "<<tname<<". Cast-from type, "<<oname<<". Changes int sign type. "<<support::getQualifiedName(*(ACD)); 
