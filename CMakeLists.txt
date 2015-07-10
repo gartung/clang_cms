@@ -1,7 +1,6 @@
-
 cmake_minimum_required (VERSION 2.8.8)
 
-project (clang_cms CXX)
+project (clangSAplugin CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
@@ -11,7 +10,7 @@ link_directories(${LLVM_LIB_DIR})
 
 find_package(Clang REQUIRED)
 
-include_directories( ${CLANG_INCLUDE_DIR} )
+include_directories( ${CLANG_INCLUDE_DIRS} )
 
 add_definitions("-std=c++11")
 
@@ -28,7 +27,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-common -Woverloaded-virtual -Wcast
 
 set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-flat_namespace -Wl,-undefined -Wl,suppress")
 
-add_library( ClangCmsPlugin SHARED
+add_library( clangSAplugin SHARED
      src/ArgSizeChecker.cpp
      src/CatchAll.cpp
      src/ClangCmsCheckerPluginRegister.cpp
@@ -52,4 +51,4 @@ add_library( ClangCmsPlugin SHARED
      src/getParamDumper.cpp
      )
 
-target_link_libraries ( ClangCmsPlugin )
+target_link_libraries ( clangSAplugin )
