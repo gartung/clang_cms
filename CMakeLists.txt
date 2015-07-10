@@ -52,6 +52,4 @@ add_library( ClangCmsPlugin SHARED
      src/getParamDumper.cpp
      )
 
-target_link_libraries ( ClangCmsPlugin 
-     ${CLANG_LIBS} LLVMSupport
-     )
+target_link_libraries ( ClangCmsPlugin )
