@@ -4,10 +4,11 @@ if [ $# -eq 0 ] ;then J=$(getconf _NPROCESSORS_ONLN); else J=$1; fi
 
 SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
+CLANG=`which clang`
 
 export USER_LLVM_CHECKERS="-disable-checker cplusplus -disable-checker unix -disable-checker threadsafety -disable-checker core -disable-checker security -disable-checker deadcode -enable-checker optional.FunctionDumper -enable-checker optional.ClassDumper -enable-checker optional.ClassDumperCT -enable-checker optional.ClassDumperFT"
 
-scan-build -load-plugin $SCRIPTPATH/../libclangSAplugin.so $USER_LLVM_CHECKERS make -k -j $J > /tmp/class+function-dumper.log 2>&1"
+scan-build --use-analyzer=${CLANG} -load-plugin $SCRIPTPATH/../libclangSAplugin.so $USER_LLVM_CHECKERS make -k -j $J > /tmp/class+function-dumper.log 2>&1
 sort -u < /tmp/classes.txt.dumperct.unsorted | grep -e"^class" >classes.txt.dumperct.sorted
 sort -u < /tmp/classes.txt.dumperct.unsorted | grep -v -e"^class" >classes.txt.dumperct.extra
 awk -F\' ' {print "class \47"$2"\47\n\nclass \47"$4"\47\n\nclass \47"$6"\47\n\n" } '  <classes.txt.dumperct.sorted | sort -u >classes.txt.dumperct
