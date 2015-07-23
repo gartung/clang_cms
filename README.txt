@@ -42,6 +42,8 @@ Dedicated Checkers exist for each of this code constructs.
 
 == Compile LLVM / clang with this extensions ==
 
+The minimum required version of llvm/clang required to compile the module is v3.5
+
 Follow the directions to obtain and compile LLVM/clang here:
 
 http://clang.llvm.org/get_started.html#build
@@ -50,7 +52,7 @@ Stick to the directory structure suggested by this website, but run configure wi
 
 Now, checkout the repository which contains the CMS extensions into the same folder as <llvm_src> resides (CERN account needed):
 
-svn co https://svn.cern.ch/reps/cmscoperformance/projects/clang_cms 
+git clone https://github.com/gartung/clang_cms.git 
 
 and run
 
@@ -61,7 +63,7 @@ inside the clang_cms folder. If you need to disable the CMS-specific filters, yo
 
 The CMS specific checkers have now been compiled into an external library in clang_cms/lib. 
 
-== Test on a small example (non-CMSSW) ==
+== Test on a small example  ==
 
 Export the path to the new clang binary ( Bash example ):
 
@@ -70,14 +72,14 @@ export PATH=<llvm_bin>/Release+Asserts/bin/:$PATH
 
 To see a listing of all available checkers, also the CMS-specific ones, you can run the scan-build command:
 
-<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin lib/ClangCms.so
+<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin lib/libclangSAplugin.so
 
 
 Test out the newly compiled and modified clang, cd into the clang_cms/test folder and run:
 
-<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin ../lib/ClangCms.so -enable-checker threadsafety make -B
+<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin ../lib/libclangSAplugin.so -enable-checker threadsafety make -B
 
-This wil produce a clang static analyzer html your can open in your favorite browser. You can find the location in the output line, something along the lines:
+This will produce a clang static analyzer html your can open in your favorite browser. You can find the location in the output line, something along the lines:
 
 scan-build: 6 bugs found.
 scan-build: Run 'scan-view /tmp/scan-build-2012-04-26-13' to examine bug reports.
@@ -86,37 +88,8 @@ scan-build: Run 'scan-view /tmp/scan-build-2012-04-26-13' to examine bug reports
 You then call:
 firefox /tmp/scan-build-2012-04-26-13/index.html
 
-== Run within a SCRAM-based build ==
-
-Create a project area with arch slc5_amd64_gcc470
-
-export SCRAM_ARCH=slc5_amd64_gcc470
-source cmsset_default.sh
-scram pro CMSSW CMSSW_6_0_0_pre3
-
-In the project area edit
-
-config/toolbox/slc5_amd64_gcc470/tools/selected/cxxcompiler
-
-and change these lines
-
-#      <environment name="CXX" value="$GCCBINDIR/c++"/>
-      <environment name="CXX" value="(llvm src path)/tools/clang/tools/scan-build/c++-analyzer"/>
-
-Then setup the project area with the new cxxcompiler settings
-
-scram setup cxxcompiler
-
-Now you can run a build as usual expect that you will run scan-build to collect the results and then run scan-view to view them. The output by default goes to /tmp/scan-view-date-1
-
-cd src/(your package dir)
-scan-build scram b -v -k -j 4
-scan-view /tmp/scan-view-(date)-(##)
-
 You will need to include the paths to clang, scan-build and scan-view in your path
 
 export PATH=$PATH\:(llvm install path)/bin/\:(llvm src path)/tools/clang/tools/scan-build/\:(llvm src path)/tools/clang/tools/scan-view/
 
 If you also want to generate the reports for thread-safety, you also need to add the additional parameters to scan-build.
-
- 
