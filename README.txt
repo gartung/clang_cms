@@ -3,9 +3,9 @@
 
 This are the CMS clang static analyzer checkers to crawl C/C++ code for constructs which my become problematic when running multi-threaded code or do violate CMS Framework Rules.
 
-by Thomas Hauth - Thomas.Hauth@cern.ch
+by Thomas Hauth - Thomas.Hauth@cern.ch and
+Patrick Gartung - gartung@fnal.gov
 
-This is still in early development/evaluation phase. You are welcome to contribute your commens and source code changes.
 
 == Available Checks == 
 
@@ -50,7 +50,7 @@ http://clang.llvm.org/get_started.html#build
 
 Stick to the directory structure suggested by this website, but run configure with the option --enable-optimized which will speed-up llvm/clang by some factors. Compile LLVM/clang and see if this is working. The root path of the LLVM subversion folder will in the following be aliased by . The folder where you built llvm is aliased
 
-Now, checkout the repository which contains the CMS extensions into the same folder as <llvm_src> resides (CERN account needed):
+Now, checkout the repository which contains the CMS extensions into the same folder as <llvm_src> resides :
 
 git clone https://github.com/gartung/clang_cms.git 
 
