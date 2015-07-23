@@ -38,7 +38,7 @@ git clone https://github.com/gartung/clang_cms.git
 
 and run
 
-PATH=<llvm/clang install dir>/bin:$PATH 
+PATH=(llvm install path)/bin:$PATH 
 cmake .
 make 
 
@@ -50,27 +50,26 @@ The CMS specific checkers have now been compiled into an external library in cla
 
 Export the path to the new clang binary ( Bash example ):
 
-export PATH=<llvm install dir>/bin/:$PATH
+You will need to include the paths to clang, scan-build and scan-view in your path
+
+export PATH=$PATH:(llvm install path)/bin/:(llvm install path)/tools/clang/tools/scan-build/:(llvm install path)/tools/clang/tools/scan-view/
 
 
 To see a listing of all available checkers, also the CMS-specific ones, you can run the scan-build command:
 
-<llvm install dir>/tools/clang/tools/scan-build/scan-build -load-plugin libclangSAplugin.so
+scan-build -load-plugin libclangSAplugin.so
 
 
 Test out the newly compiled and modified clang, cd into the clang_cms/test folder and run:
 
-<llvm install dir>/tools/clang/tools/scan-build/scan-build -load-plugin ../lib/libclangSAplugin.so -enable-checker threadsafety  -enable-checker optional.ClassChecker -enable-checker optional.FunctionChecker make -B
+scan-build -load-plugin ../lib/libclangSAplugin.so -enable-checker threadsafety  -enable-checker optional.ClassChecker -enable-checker optional.FunctionChecker make -B
 
-This will produce a clang static analyzer html your can open in your favorite browser. You can find the location in the output line, something along the lines:
+This will produce a clang static analyzer html you can open in your favorite browser. You can find the location in the output line, something along the lines:
 
 scan-build: 41 bugs found.
 scan-build: Run 'scan-view /tmp/scan-build-2015-07-23-123119-18007-1' to examine bug reports.
 
 firefox /tmp/scan-build-2015-07-23-123119-18007-1/index.html
 
-You will need to include the paths to clang, scan-build and scan-view in your path
-
-export PATH=$PATH\:(llvm install path)/bin/\:(llvm install path)/tools/clang/tools/scan-build/\:(llvm install path)/tools/clang/tools/scan-view/
 
 If you also want to generate the reports for thread-safety, you also need to add the additional parameters to scan-build.
