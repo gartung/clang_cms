@@ -40,44 +40,49 @@ Patrick Gartung - gartung@fnal.gov
 
 Dedicated Checkers exist for each of this code constructs.
 
-== Compile LLVM / clang with this extensions ==
+== Compile LLVM / clang  ==
 
 The minimum required version of llvm/clang required to compile the module is v3.5
+The minimum required version of gcc/g++ required to compile llvm/clang is v4.7
 
 Follow the directions to obtain and compile LLVM/clang here:
 
 http://clang.llvm.org/get_started.html#build
 
-Stick to the directory structure suggested by this website, but run configure with the option --enable-optimized which will speed-up llvm/clang by some factors. Compile LLVM/clang and see if this is working. The root path of the LLVM subversion folder will in the following be aliased by . The folder where you built llvm is aliased
+If you are compiling on RHEL6 or similar systems install the devtoolset-1.1 package.
+If you are compiling on Ubuntu 14 systems install build-essentials package group.
 
-Now, checkout the repository which contains the CMS extensions into the same folder as <llvm_src> resides :
+Build and install llvm/clang on your system. Note the location if the install directory. 
+
+Now, checkout the repository which contains the CMS extensions into the same folder :
 
 git clone https://github.com/gartung/clang_cms.git 
 
 and run
 
+PATH=<llvm/clang install dir>/bin:$PATH 
 cmake .
-make
+make 
 
 inside the clang_cms folder. If you need to disable the CMS-specific filters, you can to so in CMakeLists.txt. If you encounter problems with missing files or directories, you may need to edit the file CMakeLists.txt to adapt it to your specific build configuration.
 
-The CMS specific checkers have now been compiled into an external library in clang_cms/lib. 
+The CMS specific checkers have now been compiled into an external library in clang_cms/libclangSAplugin.so . 
 
 == Test on a small example  ==
 
 Export the path to the new clang binary ( Bash example ):
 
-export PATH=<llvm_bin>/Release+Asserts/bin/:$PATH
+export PATH=<llvm install dir>/bin/:$PATH
 
 
 To see a listing of all available checkers, also the CMS-specific ones, you can run the scan-build command:
 
-<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin lib/libclangSAplugin.so
+<llvm install dir>/tools/clang/tools/scan-build/scan-build -load-plugin libclangSAplugin.so
 
 
 Test out the newly compiled and modified clang, cd into the clang_cms/test folder and run:
 
-<llvm_src>/tools/clang/tools/scan-build/scan-build -load-plugin ../lib/libclangSAplugin.so -enable-checker threadsafety make -B
+<llvm install dir>/tools/clang/tools/scan-build/scan-build -load-plugin ../lib/libclangSAplugin.so -enable-checker threadsafety make -B
 
 This will produce a clang static analyzer html your can open in your favorite browser. You can find the location in the output line, something along the lines:
 
@@ -90,6 +95,6 @@ firefox /tmp/scan-build-2012-04-26-13/index.html
 
 You will need to include the paths to clang, scan-build and scan-view in your path
 
-export PATH=$PATH\:(llvm install path)/bin/\:(llvm src path)/tools/clang/tools/scan-build/\:(llvm src path)/tools/clang/tools/scan-view/
+export PATH=$PATH\:(llvm install path)/bin/\:(llvm install path)/tools/clang/tools/scan-build/\:(llvm install path)/tools/clang/tools/scan-view/
 
 If you also want to generate the reports for thread-safety, you also need to add the additional parameters to scan-build.
