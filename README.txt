@@ -7,38 +7,15 @@ by Thomas Hauth - Thomas.Hauth@cern.ch and
 Patrick Gartung - gartung@fnal.gov
 
 
-== Available Checks == 
+== Available Checkers == 
 
-* Non-const local statics
-  
-  int foo()
-  {
-    static int myEvilLocalState;
-  }
-
-* Non-const global statics
-
-  static g_myGlobalStatic;
-  
-* use of the mutable keyword ( breaks const-corrcetness )
-
-  struct Foo{
-    mutable int myEvilValue;
-  };
-  
-* use of const_cast to remove const-ness
-
-  std::string s = "23";
-  std::string const& r_const = s;
-  std::string & r = const_cast< std::string & >( r_const );
-
-* every explicit cast statement that removes const-ness
-
-  std::string s = "23";
-  std::string const& r_const = s;
-  std::string & r = (std::string &) ( r_const );  
-
-Dedicated Checkers exist for each of this code constructs.
+threadsafety.ConstCastAway  "Checks for casts which remove const qualifier and might result in thread-unsafe code"
+threadsafety.ConstCast      "Checks for casts which remove const qualifier and might result in thread-unsafe code" 
+threadsafety.StaticLocal    "Checks for non-const method local statics which might not be thread-safe"
+threadsafety.MutableMember  "Checks for members with the mutable keyword which might not be thread-safe"
+threadsafety.GlobalStatic   "Checks for global non-const statics which might not be thread-safe"
+optional.ClassChecker       "Checks data classes for thread safety issues"
+optional.FunctionChecker    "Reports functions which access non-const statics"
 
 == Compile LLVM / clang  ==
 
