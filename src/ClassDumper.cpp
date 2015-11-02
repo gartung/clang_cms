@@ -157,7 +157,6 @@ void ClassDumperCT::checkASTDecl(const clang::ClassTemplateDecl *TD,clang::ento:
      std::string crname("class '");
      std::string pname = "classes.txt.dumperct.unsorted";
      std::string tname = TD->getTemplatedDecl()->getQualifiedNameAsString();
-     if ( tname == "edm::Wrapper" || tname == "edm::RunCache" || tname == "edm::LuminosityBlockCache" || tname == "edm::GlobalCache" ) {
           for ( auto I = TD->spec_begin(),
                E = TD->spec_end(); I != E; ++I) {
                for ( unsigned J = 0, F = I->getTemplateArgs().size(); J!=F; ++J) {
@@ -185,7 +184,6 @@ void ClassDumperCT::checkASTDecl(const clang::ClassTemplateDecl *TD,clang::ento:
                                    }
                }
           }
-     }
 
 } //end class
 
@@ -196,7 +194,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
 
      std::string crname("class '");
      std::string pname = "classes.txt.dumperft.unsorted";
-     if (TD->getTemplatedDecl()->getQualifiedNameAsString().find("typelookup::className") != std::string::npos ) {
           for ( auto I = TD->spec_begin(),
                     E = TD->spec_end(); I != E; ++I) {
                auto * SD = (*I); 
@@ -226,7 +223,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
 
                }
           }
-     }
 } //end class
 
 void ClassDumperInherit::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::AnalysisManager& mgr,
