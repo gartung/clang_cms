@@ -1,6 +1,5 @@
 
 add_clang_library( clangSAplugin
-  ArgSizeChecker.cpp
   CatchAll.cpp
   ClangCmsCheckerPluginRegister.cpp
   ClassChecker.cpp
@@ -8,19 +7,14 @@ add_clang_library( clangSAplugin
   CmsSupport.cpp
   ConstCastAwayChecker.cpp
   ConstCastChecker.cpp
-  EDMPluginDumper.cc
   FiniteMathChecker.cc
   FunctionChecker.cpp
   FunctionDumper.cpp
   GlobalStaticChecker.cpp
   MutableMemberChecker.cpp
   StaticLocalChecker.cpp
-  ThrUnsafeFCallChecker.cpp
   TrunCastChecker.cpp
   UsingNamespace.cpp
-  edmChecker.cpp
-  getByChecker.cpp
-  getParamDumper.cpp
 
   DEPENDS
   ClangSACheckers
