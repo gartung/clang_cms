@@ -157,7 +157,7 @@ void ClassDumperCT::checkASTDecl(const clang::ClassTemplateDecl *TD,clang::ento:
      std::string crname("class '");
      std::string pname = "classes.txt.dumperct.unsorted";
      std::string tname = TD->getTemplatedDecl()->getQualifiedNameAsString();
-     if ( tname == "edm::Wrapper" || tname == "edm::RunCache" || tname == "edm::LuminosityBlockCache" || tname == "edm::GlobalCache" ) {
+     if ( tname == "art::Wrapper" ) {
           for ( auto I = TD->spec_begin(),
                E = TD->spec_end(); I != E; ++I) {
                for ( unsigned J = 0, F = I->getTemplateArgs().size(); J!=F; ++J) {
