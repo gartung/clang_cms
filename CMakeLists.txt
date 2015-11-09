@@ -28,7 +28,6 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-common -Woverloaded-virtual -Wcast
 set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-flat_namespace -Wl,-undefined -Wl,suppress")
 
 add_library( clangSAplugin SHARED
-     src/ArgSizeChecker.cpp
      src/CatchAll.cpp
      src/ClangCmsCheckerPluginRegister.cpp
      src/ClassChecker.cpp
@@ -36,19 +35,14 @@ add_library( clangSAplugin SHARED
      src/CmsSupport.cpp
      src/ConstCastAwayChecker.cpp
      src/ConstCastChecker.cpp
-     src/EDMPluginDumper.cc
      src/FiniteMathChecker.cc
      src/FunctionChecker.cpp
      src/FunctionDumper.cpp
      src/GlobalStaticChecker.cpp
      src/MutableMemberChecker.cpp
      src/StaticLocalChecker.cpp
-     src/ThrUnsafeFCallChecker.cpp
      src/TrunCastChecker.cpp
      src/UsingNamespace.cpp
-     src/edmChecker.cpp
-     src/getByChecker.cpp
-     src/getParamDumper.cpp
      )
 
 target_link_libraries ( clangSAplugin )
