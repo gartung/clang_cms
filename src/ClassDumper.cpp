@@ -186,7 +186,6 @@ void ClassDumperCT::checkASTDecl(const clang::ClassTemplateDecl *TD,clang::ento:
                }
           }
      }
-
 } //end class
 
 void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::ento::AnalysisManager& mgr,
@@ -196,7 +195,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
 
      std::string crname("class '");
      std::string pname = "classes.txt.dumperft.unsorted";
-     if (TD->getTemplatedDecl()->getQualifiedNameAsString().find("typelookup::className") != std::string::npos ) {
           for ( auto I = TD->spec_begin(),
                     E = TD->spec_end(); I != E; ++I) {
                auto * SD = (*I); 
@@ -226,7 +224,6 @@ void ClassDumperFT::checkASTDecl(const clang::FunctionTemplateDecl *TD,clang::en
 
                }
           }
-     }
 } //end class
 
 void ClassDumperInherit::checkASTDecl(const clang::CXXRecordDecl *RD, clang::ento::AnalysisManager& mgr,
